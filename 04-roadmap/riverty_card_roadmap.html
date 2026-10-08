@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riverty card roadmap</title>
+<style>
+:root{--bg:#eef3f4;--card:#fff;--ink:#102a33;--mute:#506a74;--line:#c7d6db;--head:#12495a;--headink:#fff;
+--qw:#1b7a4b;--qwbg:#dcf1e5;--mp:#1f5fa8;--mpbg:#dce9f8;--fi:#5b6670;--fibg:#e6e9ec;--ts:#a8321f;--tsbg:#f9ddd7}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1b21;--card:#16282f;--ink:#e5eef1;--mute:#9db3bb;--line:#2b434d;--head:#1d5b6e;
+--qw:#6fd19a;--qwbg:#17382a;--mp:#8db8f0;--mpbg:#172e4b;--fi:#b6c0c8;--fibg:#27343c;--ts:#f2998a;--tsbg:#46201a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:var(--head);color:var(--headink);padding:22px 24px}
+h1{margin:0;font:600 26px/1.2 Georgia,"Times New Roman",serif}
+header p{margin:4px 0 0;opacity:.85}
+main{max-width:1180px;margin:0 auto;padding:20px 20px 48px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px}
+.filters span{color:var(--mute);font-size:14px;margin-right:4px}
+button.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 12px;border-radius:999px;font:inherit;font-size:14px;cursor:pointer}
+button.chip[aria-pressed="true"]{background:var(--head);color:var(--headink);border-color:var(--head)}
+button:focus-visible{outline:3px solid #f0a020;outline-offset:2px}
+.lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.lane{background:rgba(127,160,170,.12);border-radius:8px;padding:12px}
+.lane h2{margin:0;font:600 18px Georgia,serif}
+.lane .sub{color:var(--mute);font-size:13px;margin:0 0 12px}
+.card{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-left:5px solid var(--bc);border-radius:6px;padding:12px;margin:0 0 10px;font:inherit;cursor:pointer}
+.card h3{margin:0 0 6px;font-size:16px}
+.card p{margin:8px 0 0;font-size:14px;color:var(--mute)}
+.card .meta{display:none;margin-top:8px;font-size:13px;font-weight:600}
+.card[aria-expanded="true"] .meta{display:block}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;color:var(--bt);background:var(--bb)}
+.QW{--bc:var(--qw);--bt:var(--qw);--bb:var(--qwbg)}
+.MP{--bc:var(--mp);--bt:var(--mp);--bb:var(--mpbg)}
+.FI{--bc:var(--fi);--bt:var(--fi);--bb:var(--fibg)}
+.TS{--bc:var(--ts);--bt:var(--ts);--bb:var(--tsbg)}
+.empty{color:var(--mute);font-size:14px;padding:6px 2px}
+.cut{margin-top:28px}
+.cut h2{font:600 20px Georgia,serif;margin:0 0 4px}
+.cutitem{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--ts);border-radius:6px;padding:12px;margin-top:10px}
+.cutitem h3{margin:0 0 4px;font-size:16px}
+.cutitem p{margin:6px 0 0;color:var(--mute);font-size:14px}
+footer{margin-top:24px;color:var(--mute);font-size:13px}
+@media (max-width:860px){.lanes{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<h1>Riverty card roadmap</h1>
+<p>Team: 4 engineers, 1 QA. Goal: 70% activation among approved users. Kill below about 50%, or if cannibalised margin exceeds what the card earns.</p>
+</header>
+<main>
+<div class="filters" id="filters" role="group" aria-label="Filter by quadrant"><span>Show:</span></div>
+<div class="lanes" id="lanes"></div>
+<section class="cut" id="cut" aria-labelledby="cuth">
+<h2 id="cuth">Cut list</h2>
+<p class="sub" style="color:var(--mute);margin:0">Items removed from the roadmap, with the reason.</p>
+</section>
+<footer>Click a card to see its value and effort scores (1 to 5). Effort scores are estimates, not engineering data. Quadrant badges: Quick Win, Major Project, Fill-In, Time Sinker.</footer>
+</main>
+<script>
+var Q={QW:"Quick Win",MP:"Major Project",FI:"Fill-In",TS:"Time Sinker"};
+var LANES=[{k:"NOW",t:"Now",s:"3-week sprint"},{k:"NEXT",t:"Next",s:"Following 1 to 2 sprints"},{k:"LATER",t:"Later",s:"Backlog"}];
+var ITEMS=[
+{l:"NOW",n:"Instant virtual card with first-use prompt",q:"QW",v:5,e:2,r:"Activation is the metric that decides scale or kill, and a card usable minutes after approval, with a prompt to make the first purchase, targets it directly."},
+{l:"NOW",n:"Pay-after-you-decide invoice",q:"MP",v:5,e:4,r:"It is Lena's goal and the only thing that makes this more than a Riverty-branded debit card, so it starts now and will span the next sprints."},
+{l:"NOW",n:"Card security controls",q:"QW",v:4,e:2,r:"Security was the top reason users would drop a virtual card (49%), and block, PIN and 3DS largely come from the issuer processor."},
+{l:"NOW",n:"Plain-language terms and credit-check disclosure",q:"FI",v:3,e:1,r:"It answers the trust and SCHUFA preconditions from the 2023 interviews, takes days of content work and is needed for regulatory approval anyway."},
+{l:"NEXT",n:"Partner-checkout tagging and nudge",q:"QW",v:4,e:3,r:"Without it you cannot measure the cannibalised volume that triggers the kill rule, and it protects the margin the guardrail depends on."},
+{l:"NEXT",n:"Card in a mobile wallet",q:"MP",v:4,e:4,r:"A phone-first Lena can only fix the till moment with a wallet card, but provisioning is heavy and Apple's pay-later wallet slot is blocked by CCD2."},
+{l:"LATER",n:"Direct or invoice, per purchase",q:"FI",v:2,e:3,r:"It adds flexibility but does nothing for the missing option at checkout or for first use."},
+{l:"LATER",n:"Automatic payment",q:"FI",v:2,e:3,r:"It supports repeat use and trust, not activation, and needs mandate and failed-payment handling the pilot does not need."},
+{l:"LATER",n:"Purchase overview with categories",q:"FI",v:2,e:3,r:"Users liked it, but it only works if all spend is on the card and it does not move activation, so ship a plain purchase list first."},
+{l:"LATER",n:"Spending limit",q:"FI",v:2,e:3,r:"It helps only mindful spenders, so keep an issuer-set overall limit and defer user-set limits."},
+{l:"LATER",n:"Returns and refund tracking",q:"FI",v:2,e:2,r:"A refund must reduce the invoice, which is part of the invoice feature, but a separate status view is expected and does not drive first use."},
+{l:"CUT",n:"Cashback at partner merchants",q:"TS",v:3,e:5,r:"The 2023 interviews called it the biggest USP, but it needs merchant offers, funding and payouts no pilot can build, rewards spend at merchants where Riverty already exists, and eats the 0.1% interchange the margin guardrail depends on."}
+];
+var active="ALL";
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
+function render(){
+ var lanes=document.getElementById("lanes");lanes.innerHTML="";
+ LANES.forEach(function(L){
+  var box=el("section","lane");box.appendChild(el("h2","",L.t));box.appendChild(el("p","sub",L.s));
+  var n=0;
+  ITEMS.filter(function(i){return i.l===L.k&&(active==="ALL"||i.q===active)}).forEach(function(i){
+   n++;var b=el("button","card "+i.q);b.type="button";b.setAttribute("aria-expanded","false");
+   b.appendChild(el("h3","",i.n));b.appendChild(el("span","badge",Q[i.q]));
+   b.appendChild(el("p","",i.r));b.appendChild(el("div","meta","Value "+i.v+" of 5, Effort "+i.e+" of 5"));
+   b.onclick=function(){b.setAttribute("aria-expanded",b.getAttribute("aria-expanded")==="true"?"false":"true")};
+   box.appendChild(b)});
+  if(!n)box.appendChild(el("div","empty","No items match this filter."));
+  lanes.appendChild(box)});
+ var cut=document.getElementById("cut");
+ Array.prototype.slice.call(cut.querySelectorAll(".cutitem")).forEach(function(x){x.remove()});
+ ITEMS.filter(function(i){return i.l==="CUT"}).forEach(function(i){
+  var d=el("div","cutitem "+i.q);d.appendChild(el("h3","",i.n));d.appendChild(el("span","badge",Q[i.q]));
+  d.appendChild(el("p","",i.r));d.appendChild(el("p","","Value "+i.v+" of 5, Effort "+i.e+" of 5"));cut.appendChild(d)})}
+var f=document.getElementById("filters");
+[["ALL","All"],["QW","Quick Win"],["MP","Major Project"],["FI","Fill-In"],["TS","Time Sinker"]].forEach(function(p){
+ var c=el("button","chip",p[1]);c.type="button";c.setAttribute("aria-pressed",p[0]==="ALL"?"true":"false");
+ c.onclick=function(){active=p[0];Array.prototype.forEach.call(f.querySelectorAll(".chip"),function(x){x.setAttribute("aria-pressed","false")});c.setAttribute("aria-pressed","true");render()};
+ f.appendChild(c)});
+render();
+</script>
+</body>
+</html>
